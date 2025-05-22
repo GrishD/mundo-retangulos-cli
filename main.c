@@ -3,7 +3,7 @@
 
 
 typedef struct {
-    int x, y, l, h;
+    int id, x, y, l, h;
 } Retangulo;
 
 
@@ -27,7 +27,9 @@ void desenhaRetangulo(char mundo[][81], Retangulo retangulo) {
             if (x == retangulo.x || x == retangulo.x + retangulo.l - 1 || y == retangulo.y || y == retangulo.y +
                 retangulo.h - 1) // é extremidade?
                 mundo[26 - y][x] = 'X';
-            else
+            else if (x == retangulo.x + 1 && y == retangulo.y + retangulo.l - 2) // imprimir id
+                mundo[26 - y][x] = (char) ('0' + retangulo.id);
+            else // pintar retangulo
                 mundo[26 - y][x] = '+';
         }
 }
@@ -36,6 +38,7 @@ void desenhaRetangulo(char mundo[][81], Retangulo retangulo) {
 void trataCriarRetangulo(char mundo[][81]) {
     Retangulo retangulo = {0};
     scanf("%d %d %d %d", &retangulo.x, &retangulo.y, &retangulo.l, &retangulo.h);
+    retangulo.id = 4;
     desenhaRetangulo(mundo, retangulo);
 
     imprimeMundo(mundo);
