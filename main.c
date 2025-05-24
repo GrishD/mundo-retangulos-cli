@@ -22,8 +22,15 @@ void imprimeMenu() {
 
 void trataMoverDireita(Retangulos *retangulos) {
     int x, y, p;
-    scanf(" %d , %d + %d ", &x, &y, &p);
-    moveRetangulo(retangulos, x, y, p);
+    scanf(" %d , %d + %d", &x, &y, &p);
+    moveRetangulo(retangulos, x, y, p, 1);
+    imprimeMundo(retangulos);
+}
+
+void trataMoverEsquerda(Retangulos *retangulos) {
+    int x, y, p;
+    scanf(" %d , %d + %d", &x, &y, &p);
+    moveRetangulo(retangulos, x, y, p, -1);
     imprimeMundo(retangulos);
 }
 
@@ -35,13 +42,13 @@ int main() {
     char comando[100];
     while (true) {
         printf(">>  ");
-        scanf("%s", comando);
+        scanf(" %s", comando);
         if (strcmp(comando, "create") == 0)
             trataCriaRetangulo(&retangulos);
-            //else if (strcmp(comando, "moveleft") == 0)
-            //trataMover(retangulos, -1);
         else if (strcmp(comando, "moveright") == 0)
             trataMoverDireita(&retangulos);
+        else if (strcmp(comando, "moveleft") == 0)
+            trataMoverEsquerda(&retangulos);
         else
             imprimeMenu();
     }

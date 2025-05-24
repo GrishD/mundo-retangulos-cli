@@ -6,7 +6,7 @@
     - Implementação dos requisitos da AF3 (0,6 valores)
         - Visualização do mundo dos retângulos ✅
         - Comando create ✅
-        - Comandos moveleft e moveright
+        - Comandos moveleft e moveright ✅
         - Efeito da gravidade
         - Impossibilidade de interseção de retângulos
     - Comando delete, geração de identificação ✅e limite de retângulos ✅ (0,3 valores)
