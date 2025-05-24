@@ -22,7 +22,6 @@ void desenhaRetangulo(char mundo[][COMPRIMENTO + 1], const Retangulo retangulo) 
 void desenhaRetangulos(const Retangulos *retangulos, char mundo[][COMPRIMENTO + 1]) {
     for (int i = 0; i < retangulos->quantidade; i++)
         desenhaRetangulo(mundo, retangulos->lista[i]);
-    fflush(stdout);
 }
 
 void imprimeMundo(const Retangulos *retangulos) {
@@ -36,4 +35,5 @@ void imprimeMundo(const Retangulos *retangulos) {
             printf("%c", mundo[y][x]);
         putchar('\n');
     }
+    fflush(stdout);
 }
