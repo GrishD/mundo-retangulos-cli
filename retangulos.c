@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "retangulos.h"
 
 void criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
@@ -10,4 +11,11 @@ void criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l
     // TODO: dar erro se nao estiver dentro das margens
     retangulos->lista[retangulos->quantidade] = novoRetangulo;
     retangulos->quantidade++;
+}
+
+bool eContorno(const Retangulo retangulo, const int x, const int y) {
+    return x == retangulo.x
+           || x == retangulo.x + retangulo.l - 1
+           || y == retangulo.y
+           || y == retangulo.y + retangulo.h - 1;
 }

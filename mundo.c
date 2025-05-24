@@ -9,14 +9,11 @@ void limpaMundo(char mundo[][COMPRIMENTO + 1]) {
             mundo[y][x] = ' ';
 }
 
+
 void desenhaRetangulo(char mundo[][COMPRIMENTO + 1], const Retangulo retangulo) {
     for (int y = retangulo.y; y <= retangulo.y + retangulo.h - 1; y++)
         for (int x = retangulo.x; x <= retangulo.x + retangulo.l - 1; x++) {
-            if (x == retangulo.x // TODO: criar funcao modulo retangulo "noContorno"
-                || x == retangulo.x + retangulo.l - 1
-                || y == retangulo.y
-                || y == retangulo.y + retangulo.h - 1
-            ) // é extremidade?
+            if (eContorno(retangulo, x, y))
                 mundo[ALTURA + 1 - y][x] = 'X'; // TODO: criar funcao no modulo mundo para fazer set
             else
                 mundo[ALTURA + 1 - y][x] = '+'; // pintar retangulo
