@@ -35,16 +35,16 @@ Retangulo *procuraRetangulo(Retangulos *retangulos, int x, int y) {
     return NULL;
 }
 
-void move(Retangulos *retangulos, Retangulo *retangulo, const int p, const int passo) {
+void move(Retangulos *retangulos, Retangulo *retangulo, const int p, const int salto) {
     // o objetivo de utilizar retangulos é para detetar colisões
     for (int i = 0; i < p; i++) {
-        retangulo->x += passo;
+        retangulo->x += salto;
     }
 }
 
-void moveRetangulo(Retangulos *retangulos, const int x, const int y, const int p, const int passo) {
+void moveRetangulo(Retangulos *retangulos, const int x, const int y, const int p, const int salto) {
     Retangulo *retangulo = procuraRetangulo(retangulos, x, y);
     if (!retangulo) return; // TODO: devia retornar um erro
 
-    move(retangulos, retangulo, p, passo);
+    move(retangulos, retangulo, p, salto);
 }
