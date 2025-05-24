@@ -12,11 +12,19 @@ void trataCriaRetangulo(Retangulos *retangulos) {
 }
 
 void imprimeMenu() {
-    printf(" ------------------\n");
-    printf("| create x,y+l,h   |\n");
-    printf("| moveright x,y+p  |\n");
-    printf("| moveleft x,y+p   |\n");
-    printf(" ------------------\n");
+    printf(" -----------------\n");
+    printf("| create x,y+l,h  |\n");
+    printf("| moveright x,y+p |\n");
+    printf("| moveleft x,y+p  |\n");
+    printf(" -----------------\n");
+}
+
+
+void trataMoverDireita(Retangulos *retangulos) {
+    int x, y, p;
+    scanf(" %d , %d + %d ", &x, &y, &p);
+    moveRetangulo(retangulos, x, y, p);
+    imprimeMundo(retangulos);
 }
 
 int main() {
@@ -30,11 +38,11 @@ int main() {
         scanf("%s", comando);
         if (strcmp(comando, "create") == 0)
             trataCriaRetangulo(&retangulos);
+            //else if (strcmp(comando, "moveleft") == 0)
+            //trataMover(retangulos, -1);
+        else if (strcmp(comando, "moveright") == 0)
+            trataMoverDireita(&retangulos);
         else
             imprimeMenu();
-        //else if (strcmp(comando, "moveleft") == 0)
-        //trataMover(retangulos, -1);
-        //else if (strcmp(comando, "moveright") == 0)
-        //trataMover(retangulos, 1);
     }
 }
