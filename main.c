@@ -34,6 +34,14 @@ void trataMoverEsquerda(Retangulos *retangulos) {
     imprimeMundo(retangulos);
 }
 
+
+void trataApagar(Retangulos *retangulos) {
+    int x, y;
+    scanf(" %d , %d", &x, &y);
+    apagaRetangulo(retangulos, x, y);
+    imprimeMundo(retangulos);
+}
+
 int main() {
     printf("Bem-vindo/a\n\n");
     imprimeMenu();
@@ -49,6 +57,8 @@ int main() {
             trataMoverDireita(&retangulos);
         else if (strcmp(comando, "moveleft") == 0)
             trataMoverEsquerda(&retangulos);
+        else if (strcmp(comando, "delete") == 0)
+            trataApagar(&retangulos);
         else
             imprimeMenu();
     }

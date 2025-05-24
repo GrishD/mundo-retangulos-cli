@@ -19,3 +19,5 @@ bool eContorno(Retangulo retangulo, int x, int y);
 
 void moveRetangulo(Retangulos *retangulos, int x, int y, int p, int salto);
 
+void apagaRetangulo(Retangulos *retangulos, int x, int y);
+
