@@ -4,7 +4,6 @@
 
 #define MAX_RETANGULOS 10
 
-
 typedef struct {
     int id, x, y, l, h;
 } Retangulo;

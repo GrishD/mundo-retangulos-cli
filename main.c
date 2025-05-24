@@ -6,7 +6,7 @@
 
 void trataCriaRetangulo(Retangulos *retangulos) {
     int x, y, l, h;
-    scanf("%d %d %d %d", &x, &y, &l, &h); // TODO: aceitar o formato certo
+    scanf(" %d , %d + %d , %d", &x, &y, &l, &h);
     criaRetangulo(retangulos, x, y, l, h);
     imprimeMundo(retangulos);
 }
