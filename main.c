@@ -2,19 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-// TODO: modulo retangulos
-#define MAX_RETANGULOS 10
 
-// TODO: modulo retangulos
-typedef struct {
-    int id, x, y, l, h;
-} Retangulo;
-
-// TODO: modulo retangulos
-typedef struct {
-    int quantidade;
-    Retangulo lista[MAX_RETANGULOS];
-} Retangulos;
 
 // TODO: modulo mundo
 void limpaMundo(char mundo[][81]) {
@@ -60,18 +48,7 @@ void imprimeMundo(const Retangulos *retangulos) {
     }
 }
 
-// TODO: modulo retangulos
-void criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
-    // TODO: detetar dentro das margens
-    // TODO: detetar quantidade maxima atingida
-    const Retangulo novoRetangulo = {
-        .x = x, .y = y, .l = l, .h = h,
-        .id = retangulos->quantidade // TODO: procurar o primeiro id que nao existe
-    };
-    // TODO: dar erro se nao estiver dentro das margens
-    retangulos->lista[retangulos->quantidade] = novoRetangulo;
-    retangulos->quantidade++;
-}
+
 
 void trataCriaRetangulo(Retangulos *retangulos) {
     int x, y, l, h;
