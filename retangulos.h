@@ -1,7 +1,7 @@
 #ifndef RETANGULOS_H
 #define RETANGULOS_H
-#define MAX_RETANGULOS 10
 
+#define MAX_RETANGULOS 10
 
 typedef struct {
     int id, x, y, l, h;
@@ -13,6 +13,6 @@ typedef struct {
     Retangulo lista[MAX_RETANGULOS];
 } Retangulos;
 
-#endif //RETANGULOS_H
+void criaRetangulo(Retangulos *retangulos, int x, int y, int l, int h);
 
-
+#endif

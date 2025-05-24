@@ -1,3 +1,4 @@
+#include "retangulos.h"
 
 void criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
     // TODO: detetar dentro das margens

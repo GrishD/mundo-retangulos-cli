@@ -1,8 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
-
+#include "retangulos.h"
 
 // TODO: modulo mundo
 void limpaMundo(char mundo[][81]) {
@@ -47,8 +46,6 @@ void imprimeMundo(const Retangulos *retangulos) {
         putchar('\n');
     }
 }
-
-
 
 void trataCriaRetangulo(Retangulos *retangulos) {
     int x, y, l, h;
