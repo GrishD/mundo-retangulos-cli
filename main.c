@@ -10,6 +10,8 @@ void trataCriaRetangulo(Retangulos *retangulos) {
     const int resultado = criaRetangulo(retangulos, x, y, l, h);
     if (resultado == ERRO_CRIAR_FORA_LIMITES)
         printf("Erro: retangulo fica fora dos limites.\n");
+    else if (resultado == ERRO_CRIAR_MAX_RETANGULOS)
+        printf("Erro: numero maximo de retangulos atingido.\n");
     else
         imprimeMundo(retangulos);
 }

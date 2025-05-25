@@ -3,7 +3,9 @@
 #include "stdbool.h"
 
 #define MAX_RETANGULOS 10
+
 #define ERRO_CRIAR_FORA_LIMITES 1
+#define ERRO_CRIAR_MAX_RETANGULOS 2
 
 typedef struct {
     int id, x, y, l, h;

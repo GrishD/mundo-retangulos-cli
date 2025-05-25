@@ -1,7 +1,7 @@
 #include <stdbool.h>
+#include <stddef.h>
 #include "retangulos.h"
 
-#include <stddef.h>
 
 bool dentroMundo(const Retangulos *retangulos, const int x, const int y, const int h, const int l) {
     return x >= 1 && x + l - 1 <= retangulos->xMaximo
@@ -11,8 +11,9 @@ bool dentroMundo(const Retangulos *retangulos, const int x, const int y, const i
 int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
     if (!dentroMundo(retangulos, x, y, h, l))
         return ERRO_CRIAR_FORA_LIMITES;
+    if (retangulos->quantidade >= MAX_RETANGULOS)
+        return ERRO_CRIAR_MAX_RETANGULOS;
 
-    // TODO: detetar quantidade maxima atingida
     // TODO: detetar intersecções
     const Retangulo novoRetangulo = {
         .x = x, .y = y, .l = l, .h = h,
