@@ -7,6 +7,10 @@
 #define ERRO_CRIAR_FORA_LIMITES 1
 #define ERRO_CRIAR_MAX_RETANGULOS 2
 #define ERRO_CRIAR_TEM_INTERSECAO 3
+#define ERRO_MOVER_INTERSECAO 4
+#define ERRO_MOVER_RETANGULO_INEXISTENTE 5
+#define ERRO_MOVER_FORA_LIMITES 6
+#define ERRO_APAGAR_RETANGULO_INEXISTENTE 7
 
 typedef struct {
     int id, x, y, l, h;
@@ -23,7 +27,7 @@ int criaRetangulo(Retangulos *retangulos, int x, int y, int l, int h);
 
 bool eContorno(Retangulo retangulo, int x, int y);
 
-void moveRetangulo(Retangulos *retangulos, int x, int y, int p, int salto);
+int moveRetangulo(Retangulos *retangulos, int x, int y, int p, int salto);
 
-void apagaRetangulo(Retangulos *retangulos, int x, int y);
+int apagaRetangulo(Retangulos *retangulos, int x, int y);
 
