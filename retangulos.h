@@ -6,6 +6,7 @@
 
 #define ERRO_CRIAR_FORA_LIMITES 1
 #define ERRO_CRIAR_MAX_RETANGULOS 2
+#define ERRO_CRIAR_TEM_INTERSECAO 3
 
 typedef struct {
     int id, x, y, l, h;

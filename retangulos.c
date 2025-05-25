@@ -2,23 +2,34 @@
 #include <stddef.h>
 #include "retangulos.h"
 
+bool dentroMundo(const Retangulos *retangulos, const Retangulo retangulo) {
+    return retangulo.x >= 1 && retangulo.x + retangulo.l - 1 <= retangulos->xMaximo &&
+           retangulo.y >= 1 && retangulo.y + retangulo.h - 1 <= retangulos->yMaximo;
+}
 
-bool dentroMundo(const Retangulos *retangulos, const int x, const int y, const int h, const int l) {
-    return x >= 1 && x + l - 1 <= retangulos->xMaximo
-           && y >= 1 && y + h - 1 <= retangulos->yMaximo;
+bool existeIntersecao(const Retangulo a, const Retangulo b) {
+    // interseção em x
+    return a.x < b.x + b.l &&
+           a.x + a.l > b.x &&
+           // interseção em y
+           a.y < b.y + b.h &&
+           a.y + a.h > b.y;;
 }
 
 int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
-    if (!dentroMundo(retangulos, x, y, h, l))
-        return ERRO_CRIAR_FORA_LIMITES;
     if (retangulos->quantidade >= MAX_RETANGULOS)
         return ERRO_CRIAR_MAX_RETANGULOS;
-
-    // TODO: detetar intersecções
     const Retangulo novoRetangulo = {
         .x = x, .y = y, .l = l, .h = h,
         .id = retangulos->quantidade
     };
+    if (!dentroMundo(retangulos, novoRetangulo))
+        return ERRO_CRIAR_FORA_LIMITES;
+    for (int i = 0; i < retangulos->quantidade; i++) {
+        if (existeIntersecao(novoRetangulo, retangulos->lista[i]))
+            return ERRO_CRIAR_TEM_INTERSECAO;
+    }
+
     retangulos->lista[retangulos->quantidade] = novoRetangulo;
     retangulos->quantidade++;
     return 0;

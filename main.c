@@ -12,6 +12,8 @@ void trataCriaRetangulo(Retangulos *retangulos) {
         printf("Erro: retangulo fica fora dos limites.\n");
     else if (resultado == ERRO_CRIAR_MAX_RETANGULOS)
         printf("Erro: numero maximo de retangulos atingido.\n");
+    else if (resultado == ERRO_CRIAR_TEM_INTERSECAO)
+        printf("Erro: existe intersecao entre retangulos.\n");
     else
         imprimeMundo(retangulos);
 }
