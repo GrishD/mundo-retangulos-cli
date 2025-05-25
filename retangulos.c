@@ -3,8 +3,15 @@
 
 #include <stddef.h>
 
-void criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
-    // TODO: detetar dentro das margens
+bool dentroMundo(const Retangulos *retangulos, const int x, const int y, const int h, const int l) {
+    return x >= 1 && x + l - 1 <= retangulos->xMaximo
+           && y >= 1 && y + h - 1 <= retangulos->yMaximo;
+}
+
+int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
+    if (!dentroMundo(retangulos, x, y, h, l))
+        return ERRO_CRIAR_FORA_LIMITES;
+
     // TODO: detetar quantidade maxima atingida
     // TODO: detetar intersecções
     const Retangulo novoRetangulo = {
@@ -13,6 +20,7 @@ void criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l
     };
     retangulos->lista[retangulos->quantidade] = novoRetangulo;
     retangulos->quantidade++;
+    return 0;
 }
 
 bool eContorno(const Retangulo retangulo, const int x, const int y) {

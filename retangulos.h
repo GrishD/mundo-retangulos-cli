@@ -3,6 +3,7 @@
 #include "stdbool.h"
 
 #define MAX_RETANGULOS 10
+#define ERRO_CRIAR_FORA_LIMITES 1
 
 typedef struct {
     int id, x, y, l, h;
@@ -11,9 +12,11 @@ typedef struct {
 typedef struct {
     int quantidade;
     Retangulo lista[MAX_RETANGULOS];
+    int xMaximo;
+    int yMaximo;
 } Retangulos;
 
-void criaRetangulo(Retangulos *retangulos, int x, int y, int l, int h);
+int criaRetangulo(Retangulos *retangulos, int x, int y, int l, int h);
 
 bool eContorno(Retangulo retangulo, int x, int y);
 

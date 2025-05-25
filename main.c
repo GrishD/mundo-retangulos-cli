@@ -7,8 +7,11 @@
 void trataCriaRetangulo(Retangulos *retangulos) {
     int x, y, l, h;
     scanf(" %d , %d + %d , %d", &x, &y, &l, &h);
-    criaRetangulo(retangulos, x, y, l, h);
-    imprimeMundo(retangulos);
+    const int resultado = criaRetangulo(retangulos, x, y, l, h);
+    if (resultado == ERRO_CRIAR_FORA_LIMITES)
+        printf("Erro: retangulo fica fora dos limites.\n");
+    else
+        imprimeMundo(retangulos);
 }
 
 void imprimeMenu() {
@@ -18,7 +21,6 @@ void imprimeMenu() {
     printf("| moveleft x,y+p  |\n");
     printf(" -----------------\n");
 }
-
 
 void trataMoverDireita(Retangulos *retangulos) {
     int x, y, p;
@@ -45,7 +47,7 @@ void trataApagar(Retangulos *retangulos) {
 int main() {
     printf("Bem-vindo/a\n\n");
     imprimeMenu();
-    Retangulos retangulos = {.quantidade = 0};
+    Retangulos retangulos = {.quantidade = 0, .xMaximo = COMPRIMENTO, .yMaximo = ALTURA};
 
     char comando[100];
     while (true) {
