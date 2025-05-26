@@ -125,6 +125,7 @@ int moveRetangulo(Retangulos *retangulos, const int x, const int y, const int p,
 }
 
 int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
+    int i;
     Retangulo *retangulo, *ultimoRetangulo;
 
     retangulo = procuraRetangulo(retangulos, x, y);
@@ -135,7 +136,10 @@ int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
     *retangulo = *ultimoRetangulo;
     retangulos->quantidade--;
 
-    /* TODO: reatribuir o id do apagado ao copiado do fim */
+    /* reatribuir os ids para evitar ficar com saltos */
+    for (i = 0; i < retangulos->quantidade; i++)
+        retangulos->lista[i].id = i;
+
     acionaGravidade(retangulos);
 
     return 0;
