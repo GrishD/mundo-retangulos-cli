@@ -21,7 +21,9 @@ typedef struct {
 
 typedef struct {
     int quantidade;
-    Retangulo lista[MAX_RETANGULOS];
+    Retangulo *lista;
+    /* aqui evita-se referenciar as constantes que estão no mundo para não criar uma dep circular e porque o módulo
+     * mundo serve só para visualizar */
     int xMaximo;
     int yMaximo;
 } Retangulos;

@@ -2,7 +2,7 @@
 
 - Implementação de testes de unidade e de integração (0,3 valores)
 - Funcionamento conforme requisitos (total de 1,6 valores):
-    - Uso adequado de memória dinâmica (0,2 valores)
+    - Uso adequado de memória dinâmica (0,2 valores) ✅
     - Implementação dos requisitos da AF3 (0,6 valores)
         - Visualização do mundo dos retângulos ✅
         - Comando create ✅

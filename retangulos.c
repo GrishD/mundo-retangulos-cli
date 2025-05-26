@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "retangulos.h"
 
+#include <stdio.h>
+
 int estaDentroDoMundo(const Retangulos *retangulos, const Retangulo retangulo) {
     return retangulo.x >= 1 && retangulo.x + retangulo.l - 1 <= retangulos->xMaximo &&
            retangulo.y >= 1 && retangulo.y + retangulo.h - 1 <= retangulos->yMaximo;
@@ -63,6 +65,12 @@ int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l,
 
     if (existeIntersecaoComOutros(retangulos, &novoRetangulo))
         return ERRO_CRIAR_TEM_INTERSECAO;
+
+    retangulos->lista = realloc(retangulos->lista, (retangulos->quantidade + 1) * sizeof(Retangulo));
+    if (retangulos->lista == NULL) {
+        printf("Erro ao realocar memoria\n");
+        exit(1);
+    }
 
     retangulos->lista[retangulos->quantidade] = novoRetangulo;
     retangulos->quantidade++;
@@ -135,6 +143,18 @@ int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
     ultimoRetangulo = &retangulos->lista[retangulos->quantidade - 1];
     *retangulo = *ultimoRetangulo;
     retangulos->quantidade--;
+
+    if (retangulos->quantidade == 0) {
+        /* se for zero, realloc pode dar problemas por isso é melhor libertar e sair */
+        free(retangulos->lista);
+        retangulos->lista = NULL;
+        return 0;
+    }
+    retangulos->lista = realloc(retangulos->lista, retangulos->quantidade * sizeof(Retangulo));
+    if (retangulos->lista == NULL) {
+        printf("Erro ao realocar memoria\n");
+        exit(2);
+    }
 
     /* reatribuir os ids para evitar ficar com saltos */
     for (i = 0; i < retangulos->quantidade; i++)
