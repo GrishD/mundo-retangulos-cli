@@ -68,7 +68,7 @@ int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l,
 
     retangulos->lista = realloc(retangulos->lista, (retangulos->quantidade + 1) * sizeof(Retangulo));
     if (retangulos->lista == NULL) {
-        printf("Erro ao realocar memoria\n");
+        printf("Erro ao realocar memoria (criaRetangulo)\n");
         exit(1);
     }
 
@@ -154,7 +154,7 @@ int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
     /* realoca memória da lista */
     retangulos->lista = realloc(retangulos->lista, retangulos->quantidade * sizeof(Retangulo));
     if (retangulos->lista == NULL) {
-        printf("Erro ao realocar memoria\n");
+        printf("Erro ao realocar memoria (apagaRetangulo)\n");
         exit(2);
     }
 
@@ -165,4 +165,36 @@ int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
     acionaGravidade(retangulos);
 
     return 0;
+}
+
+bool detetaColisaoLateral(const Retangulo a, const Retangulo b) {
+    const bool sobreposicaoY = a.y < b.y + b.h && a.y + a.h > b.y;
+    /* verifica se estão encostados lateralmente */
+    const bool encostadosDireita = a.x + a.l == b.x;
+    const bool encostadosEsquerda = b.x + b.l == a.x;
+    return sobreposicaoY && (encostadosDireita || encostadosEsquerda);
+}
+
+/* o segundo argumento é para armazenar o output */
+void detetaColisoesLaterais(const Retangulos *retangulos, Colisoes *colisoes) {
+    int i, j;
+    Colisao colisao;
+
+    colisoes->lista = malloc(sizeof(Colisoes) * (retangulos->quantidade - 1));
+    colisoes->quantidade = 0;
+    if (colisoes->lista == NULL) {
+        printf("Erro ao realocar memoria (detetaColisoesLaterais)\n");
+        exit(3);
+    }
+
+    for (i = 0; i < retangulos->quantidade; i++) {
+        for (j = i + 1; j < retangulos->quantidade; j++) {
+            if (detetaColisaoLateral(retangulos->lista[i], retangulos->lista[j])) {
+                colisao.idA = retangulos->lista[i].id;
+                colisao.idB = retangulos->lista[j].id;
+                colisoes->lista[colisoes->quantidade] = colisao;
+                colisoes->quantidade++;
+            }
+        }
+    }
 }

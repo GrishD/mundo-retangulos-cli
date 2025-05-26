@@ -36,4 +36,15 @@ int moveRetangulo(const Retangulos *retangulos, int x, int y, int p, int salto);
 
 int apagaRetangulo(Retangulos *retangulos, int x, int y);
 
+typedef struct {
+    int idA, idB;
+} Colisao;
+
+typedef struct {
+    Colisao *lista;
+    int quantidade;
+} Colisoes;
+
+void detetaColisoesLaterais(const Retangulos *retangulos, Colisoes *colisoes);
+
 #endif
