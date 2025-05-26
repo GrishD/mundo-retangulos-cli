@@ -15,7 +15,7 @@ void desenhaRetangulo(char mundo[][COMPRIMENTO + 1], const Retangulo retangulo) 
     int x, y;
     for (y = retangulo.y; y <= retangulo.y + retangulo.h - 1; y++)
         for (x = retangulo.x; x <= retangulo.x + retangulo.l - 1; x++) {
-            if (eContorno(retangulo, x, y))
+            if (estaNoContorno(retangulo, x, y))
                 mundo[ALTURA + 1 - y][x] = 'X'; /* contorno retangulo */
             else
                 mundo[ALTURA + 1 - y][x] = '+'; /* interior retangulo */

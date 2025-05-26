@@ -28,7 +28,7 @@ typedef struct {
 
 int criaRetangulo(Retangulos *retangulos, int x, int y, int l, int h);
 
-bool eContorno(Retangulo retangulo, int x, int y);
+bool estaNoContorno(Retangulo retangulo, int x, int y);
 
 int moveRetangulo(Retangulos *retangulos, int x, int y, int p, int salto);
 

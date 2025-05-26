@@ -1,7 +1,8 @@
 #include <stddef.h>
+#include <stdlib.h>
 #include "retangulos.h"
 
-int dentroMundo(const Retangulos *retangulos, const Retangulo retangulo) {
+int estaDentroDoMundo(const Retangulos *retangulos, const Retangulo retangulo) {
     return retangulo.x >= 1 && retangulo.x + retangulo.l - 1 <= retangulos->xMaximo &&
            retangulo.y >= 1 && retangulo.y + retangulo.h - 1 <= retangulos->yMaximo;
 }
@@ -25,11 +26,25 @@ bool existeIntersecaoComOutros(const Retangulos *retangulos, const Retangulo *re
 }
 
 void acionaGravidadeNoRetangulo(const Retangulos *retangulos, Retangulo *retangulo) {
-    while (!existeIntersecaoComOutros(retangulos, retangulo) && dentroMundo(retangulos, *retangulo)) {
-        retangulo->y--; /* anda de um em um porque pode bater ter interseção a qualquer momento */
+    while (!existeIntersecaoComOutros(retangulos, retangulo) && estaDentroDoMundo(retangulos, *retangulo)) {
+        retangulo->y--; /* anda de um em um, pois pode bater ter interseção a qualquer momento */
     }
     /* se chegou aqui é porque já houve uma interseção ou bateu no limite inferior, portanto vamos anular uma posição */
     retangulo->y++;
+}
+
+int comparaPorY(const void *a, const void *b) {
+    return ((Retangulo *) a)->y - ((Retangulo *) b)->y;
+}
+
+/* Aplicar a gravidade a todos os retângulos, um por um */
+void acionaGravidade(Retangulos *retangulos) {
+    int i;
+    /* temos de ordenar do mais acima para o mais abaixo para garantir que os de baixo caem primeiro que os de cima
+     * senão para a gravidade ser aplicada por ordem, a começar por baixo (a ordem é irrelevante na lista) */
+    qsort(retangulos->lista, retangulos->quantidade, sizeof(Retangulo), comparaPorY);
+    for (i = 0; i < retangulos->quantidade; i++)
+        acionaGravidadeNoRetangulo(retangulos, &retangulos->lista[i]);
 }
 
 int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
@@ -43,7 +58,7 @@ int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l,
     novoRetangulo.h = h;
     novoRetangulo.id = retangulos->quantidade;
 
-    if (!dentroMundo(retangulos, novoRetangulo))
+    if (!estaDentroDoMundo(retangulos, novoRetangulo))
         return ERRO_CRIAR_FORA_LIMITES;
 
     if (existeIntersecaoComOutros(retangulos, &novoRetangulo))
@@ -57,14 +72,14 @@ int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l,
     return 0;
 }
 
-bool eContorno(const Retangulo retangulo, const int x, const int y) {
+bool estaNoContorno(const Retangulo retangulo, const int x, const int y) {
     return x == retangulo.x
            || x == retangulo.x + retangulo.l - 1
            || y == retangulo.y
            || y == retangulo.y + retangulo.h - 1;
 }
 
-bool retanguloContemPonto(const Retangulo retangulo, const int x, const int y) {
+bool contemPonto(const Retangulo retangulo, const int x, const int y) {
     return x >= retangulo.x && x <= retangulo.x + retangulo.l - 1
            && y >= retangulo.y && y <= retangulo.y + retangulo.h - 1;
 }
@@ -73,17 +88,13 @@ Retangulo *procuraRetangulo(Retangulos *retangulos, const int x, const int y) {
     int r;
     for (r = 0; r < retangulos->quantidade; r++) {
         Retangulo *retangulo = &retangulos->lista[r];
-        if (retanguloContemPonto(*retangulo, x, y))
+        if (contemPonto(*retangulo, x, y))
             return retangulo;
     }
     return NULL;
 }
 
-bool dentroDosLimitesX(const Retangulos *retangulos, const Retangulo *retangulo) {
-    return retangulo->x >= 1 && retangulo->x + retangulo->l - 1 <= retangulos->xMaximo;
-}
-
-int move(const Retangulos *retangulos, Retangulo *retangulo, const int p, const int salto) {
+int move(Retangulos *retangulos, Retangulo *retangulo, const int p, const int salto) {
     int i, xRetanguloInicial;
     xRetanguloInicial = retangulo->x;
 
@@ -91,15 +102,17 @@ int move(const Retangulos *retangulos, Retangulo *retangulo, const int p, const 
         retangulo->x += salto;
 
         if (existeIntersecaoComOutros(retangulos, retangulo)) {
-            retangulo->x = xRetanguloInicial; /* repor valor original pois houve erro */
+            retangulo->x = xRetanguloInicial; /* repor valor original, pois houve erro */
             return ERRO_MOVER_INTERSECAO;
         }
 
-        if (!dentroDosLimitesX(retangulos, retangulo)) {
+        if (!estaDentroDoMundo(retangulos, *retangulo)) {
             retangulo->x = xRetanguloInicial; /* repor valor original */
             return ERRO_MOVER_FORA_LIMITES;
         }
     }
+
+    acionaGravidade(retangulos);
     return 0;
 }
 
@@ -123,5 +136,7 @@ int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
     retangulos->quantidade--;
 
     /* TODO: reatribuir o id do apagado ao copiado do fim */
+    acionaGravidade(retangulos);
+
     return 0;
 }
