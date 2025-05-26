@@ -4,9 +4,10 @@
 #include "mundo.h"
 
 void trataCriaRetangulo(Retangulos *retangulos) {
-    int x, y, l, h;
+    int x, y, l, h, resultado;
+
     scanf(" %d , %d + %d , %d", &x, &y, &l, &h);
-    const int resultado = criaRetangulo(retangulos, x, y, l, h);
+    resultado = criaRetangulo(retangulos, x, y, l, h);
     if (resultado == ERRO_CRIAR_FORA_LIMITES)
         printf("Erro: criacao fora dos limites.\n");
     else if (resultado == ERRO_CRIAR_MAX_RETANGULOS)
@@ -22,6 +23,7 @@ void imprimeMenu() {
     printf("| create x,y+l,h  |\n");
     printf("| moveright x,y+p |\n");
     printf("| moveleft x,y+p  |\n");
+    printf("| delete x,y      |\n");
     printf(" -----------------\n");
 }
 
@@ -60,11 +62,16 @@ void trataApagar(Retangulos *retangulos) {
         imprimeMundo(retangulos);
 }
 
-int main() {
+void main() {
     char comando[100];
+    Retangulos retangulos;
+
+    retangulos.quantidade = 0;
+    retangulos.xMaximo = COMPRIMENTO;
+    retangulos.yMaximo = ALTURA;
+
     printf("Bem-vindo/a\n\n");
     imprimeMenu();
-    Retangulos retangulos = {.quantidade = 0, .xMaximo = COMPRIMENTO, .yMaximo = ALTURA};
 
     while (1) {
         printf(">>  ");
