@@ -1,42 +1,48 @@
-#include <stdbool.h>
 #include <stddef.h>
 #include "retangulos.h"
 
-bool dentroMundo(const Retangulos *retangulos, const Retangulo retangulo) {
+int dentroMundo(const Retangulos *retangulos, const Retangulo retangulo) {
     return retangulo.x >= 1 && retangulo.x + retangulo.l - 1 <= retangulos->xMaximo &&
            retangulo.y >= 1 && retangulo.y + retangulo.h - 1 <= retangulos->yMaximo;
 }
 
 bool existeIntersecao(const Retangulo a, const Retangulo b) {
-    // interseção em x
+    /* interseção em x */
     return a.x < b.x + b.l &&
            a.x + a.l > b.x &&
-           // interseção em y
+           /* interseção em y */
            a.y < b.y + b.h &&
            a.y + a.h > b.y;;
 }
 
 bool existeIntersecaoComOutros(const Retangulos *retangulos, const Retangulo *retangulo) {
-    for (int i = 0; i < retangulos->quantidade; i++)
+    int i;
+    for (i = 0; i < retangulos->quantidade; i++)
         if (retangulo != &retangulos->lista[i] && existeIntersecao(*retangulo, retangulos->lista[i]))
             return true;
     return false;
 }
 
 int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
+    Retangulo novoRetangulo;
     if (retangulos->quantidade >= MAX_RETANGULOS)
         return ERRO_CRIAR_MAX_RETANGULOS;
-    const Retangulo novoRetangulo = {
-        .x = x, .y = y, .l = l, .h = h,
-        .id = retangulos->quantidade
-    };
+
+    novoRetangulo.x = x;
+    novoRetangulo.y = y;
+    novoRetangulo.l = l;
+    novoRetangulo.h = h;
+    novoRetangulo.id = retangulos->quantidade;
+
     if (!dentroMundo(retangulos, novoRetangulo))
         return ERRO_CRIAR_FORA_LIMITES;
+
     if (existeIntersecaoComOutros(retangulos, &novoRetangulo))
         return ERRO_CRIAR_TEM_INTERSECAO;
 
     retangulos->lista[retangulos->quantidade] = novoRetangulo;
     retangulos->quantidade++;
+
     return 0;
 }
 
@@ -53,7 +59,8 @@ bool retanguloContemPonto(const Retangulo retangulo, const int x, const int y) {
 }
 
 Retangulo *procuraRetangulo(Retangulos *retangulos, const int x, const int y) {
-    for (int r = 0; r < retangulos->quantidade; r++) {
+    int r;
+    for (r = 0; r < retangulos->quantidade; r++) {
         Retangulo *retangulo = &retangulos->lista[r];
         if (retanguloContemPonto(*retangulo, x, y))
             return retangulo;
@@ -66,15 +73,19 @@ bool dentroDosLimitesX(const Retangulos *retangulos, const Retangulo *retangulo)
 }
 
 int move(const Retangulos *retangulos, Retangulo *retangulo, const int p, const int salto) {
-    const int copiaRetanguloX = retangulo->x;
-    for (int i = 0; i < p; i++) {
+    int i, xRetanguloInicial;
+    xRetanguloInicial = retangulo->x;
+
+    for (i = 0; i < p; i++) {
         retangulo->x += salto;
+
         if (existeIntersecaoComOutros(retangulos, retangulo)) {
-            retangulo->x -= copiaRetanguloX; // repor o valor anterior se der erro
+            retangulo->x = xRetanguloInicial; /* repor valor original pois houve erro */
             return ERRO_MOVER_INTERSECAO;
         }
+
         if (!dentroDosLimitesX(retangulos, retangulo)) {
-            retangulo->x -= copiaRetanguloX; // repor o valor anterior se der erro
+            retangulo->x = xRetanguloInicial; /* repor valor original */
             return ERRO_MOVER_FORA_LIMITES;
         }
     }
@@ -90,13 +101,17 @@ int moveRetangulo(Retangulos *retangulos, const int x, const int y, const int p,
 }
 
 int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
-    Retangulo *retangulo = procuraRetangulo(retangulos, x, y);
+    Retangulo *retangulo, *ultimoRetangulo;
+
+    retangulo = procuraRetangulo(retangulos, x, y);
     if (!retangulo)
         return ERRO_APAGAR_RETANGULO_INEXISTENTE;
 
-    const Retangulo *ultimoRetangulo = &retangulos->lista[retangulos->quantidade - 1];
+    ultimoRetangulo = &retangulos->lista[retangulos->quantidade - 1];
     *retangulo = *ultimoRetangulo;
     retangulos->quantidade--;
-    // TODO re-atribuir id do apagado ao copiado do fim
+
+    /* TODO: reatribuir o id do apagado ao copiado do fim */
+
     return 0;
 }

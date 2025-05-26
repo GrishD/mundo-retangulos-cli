@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "retangulos.h"
@@ -38,23 +37,23 @@ void trataResultadoMover(const Retangulos *retangulos, const int resultado) {
 }
 
 void trataMoverDireita(Retangulos *retangulos) {
-    int x, y, p;
+    int x, y, p, resultado;
     scanf(" %d , %d + %d", &x, &y, &p);
-    const int resultado = moveRetangulo(retangulos, x, y, p, 1);
+    resultado = moveRetangulo(retangulos, x, y, p, 1);
     trataResultadoMover(retangulos, resultado);
 }
 
 void trataMoverEsquerda(Retangulos *retangulos) {
-    int x, y, p;
+    int x, y, p, resultado;
     scanf(" %d , %d + %d", &x, &y, &p);
-    const int resultado = moveRetangulo(retangulos, x, y, p, -1);
+    resultado = moveRetangulo(retangulos, x, y, p, -1);
     trataResultadoMover(retangulos, resultado);
 }
 
 void trataApagar(Retangulos *retangulos) {
-    int x, y;
+    int x, y, resultado;
     scanf(" %d , %d", &x, &y);
-    const int resultado = apagaRetangulo(retangulos, x, y);
+    resultado = apagaRetangulo(retangulos, x, y);
     if (resultado == ERRO_APAGAR_RETANGULO_INEXISTENTE)
         printf("Erro: retangulo inexistente.\n");
     else
@@ -62,12 +61,12 @@ void trataApagar(Retangulos *retangulos) {
 }
 
 int main() {
+    char comando[100];
     printf("Bem-vindo/a\n\n");
     imprimeMenu();
     Retangulos retangulos = {.quantidade = 0, .xMaximo = COMPRIMENTO, .yMaximo = ALTURA};
 
-    char comando[100];
-    while (true) {
+    while (1) {
         printf(">>  ");
         scanf(" %s", comando);
         if (strcmp(comando, "create") == 0)

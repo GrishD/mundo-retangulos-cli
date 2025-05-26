@@ -1,6 +1,9 @@
-#pragma once
+#ifndef RETANGULOS_H
+#define RETANGULOS_H
 
-#include "stdbool.h"
+#define bool int
+#define true 1
+#define false 0
 
 #define MAX_RETANGULOS 10
 
@@ -31,3 +34,4 @@ int moveRetangulo(Retangulos *retangulos, int x, int y, int p, int salto);
 
 int apagaRetangulo(Retangulos *retangulos, int x, int y);
 
+#endif
