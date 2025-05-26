@@ -17,10 +17,19 @@ bool existeIntersecao(const Retangulo a, const Retangulo b) {
 
 bool existeIntersecaoComOutros(const Retangulos *retangulos, const Retangulo *retangulo) {
     int i;
-    for (i = 0; i < retangulos->quantidade; i++)
+    for (i = 0; i < retangulos->quantidade; i++) {
         if (retangulo != &retangulos->lista[i] && existeIntersecao(*retangulo, retangulos->lista[i]))
             return true;
+    }
     return false;
+}
+
+void acionaGravidadeNoRetangulo(const Retangulos *retangulos, Retangulo *retangulo) {
+    while (!existeIntersecaoComOutros(retangulos, retangulo) && dentroMundo(retangulos, *retangulo)) {
+        retangulo->y--; /* anda de um em um porque pode bater ter interseção a qualquer momento */
+    }
+    /* se chegou aqui é porque já houve uma interseção ou bateu no limite inferior, portanto vamos anular uma posição */
+    retangulo->y++;
 }
 
 int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l, const int h) {
@@ -42,6 +51,8 @@ int criaRetangulo(Retangulos *retangulos, const int x, const int y, const int l,
 
     retangulos->lista[retangulos->quantidade] = novoRetangulo;
     retangulos->quantidade++;
+
+    acionaGravidadeNoRetangulo(retangulos, &retangulos->lista[retangulos->quantidade - 1]);
 
     return 0;
 }
@@ -112,6 +123,5 @@ int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
     retangulos->quantidade--;
 
     /* TODO: reatribuir o id do apagado ao copiado do fim */
-
     return 0;
 }
