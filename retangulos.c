@@ -9,7 +9,7 @@ bool existeIntersecao(const Retangulo a, const Retangulo b) {
            a.x + a.l > b.x &&
            /* interseção em y */
            a.y < b.y + b.h &&
-           a.y + a.h > b.y;;
+           a.y + a.h > b.y;
 }
 
 bool existeIntersecaoComOutros(const Retangulos *retangulos, const Retangulo *retangulo) {
@@ -92,6 +92,7 @@ bool contemPonto(const Retangulo retangulo, const int x, const int y) {
            && y >= retangulo.y && y <= retangulo.y + retangulo.h - 1;
 }
 
+/* para encontrar o retangulo que contem x,y e devolver o seu apontador */
 Retangulo *procuraRetangulo(const Retangulos *retangulos, const int x, const int y) {
     int r;
     for (r = 0; r < retangulos->quantidade; r++) {
@@ -102,6 +103,7 @@ Retangulo *procuraRetangulo(const Retangulos *retangulos, const int x, const int
     return NULL;
 }
 
+/* mover para a esquerda ou direita (em x), consoante o sinal de ´salto´ */
 int move(const Retangulos *retangulos, Retangulo *retangulo, const int p, const int salto) {
     int i, xRetanguloInicial;
     xRetanguloInicial = retangulo->x;
@@ -120,6 +122,11 @@ int move(const Retangulos *retangulos, Retangulo *retangulo, const int p, const 
         }
     }
 
+    /* ativar a gravidade só no fim pode ser problemático, pois se houver 2 retangulos, e um terceiro em cima
+     * do primeiro, e movermos esse terceiro para a direita, ele deveria cair e não ir para cima do da direita
+     * contudo, depende da interpretação do que é mover. para corrigir, era só mover a linha abaixo para dentro
+     * do ciclo acima
+     */
     acionaGravidade(retangulos);
     return 0;
 }
@@ -189,6 +196,7 @@ void detetaColisoesLaterais(const Retangulos *retangulos, Colisoes *colisoes) {
 
     for (i = 0; i < retangulos->quantidade; i++) {
         for (j = i + 1; j < retangulos->quantidade; j++) {
+            /* nao vale a pena detetar para a esquerda pois seria repetitivo */
             if (detetaColisaoLateral(retangulos->lista[i], retangulos->lista[j])) {
                 colisao.idA = retangulos->lista[i].id;
                 colisao.idB = retangulos->lista[j].id;
