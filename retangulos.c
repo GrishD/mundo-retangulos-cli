@@ -1,13 +1,7 @@
 #include <stddef.h>
 #include <stdlib.h>
-#include "retangulos.h"
-
 #include <stdio.h>
-
-int estaDentroDoMundo(const Retangulos *retangulos, const Retangulo retangulo) {
-    return retangulo.x >= 1 && retangulo.x + retangulo.l - 1 <= retangulos->xMaximo &&
-           retangulo.y >= 1 && retangulo.y + retangulo.h - 1 <= retangulos->yMaximo;
-}
+#include "retangulos.h"
 
 bool existeIntersecao(const Retangulo a, const Retangulo b) {
     /* interseção em x */
@@ -21,10 +15,16 @@ bool existeIntersecao(const Retangulo a, const Retangulo b) {
 bool existeIntersecaoComOutros(const Retangulos *retangulos, const Retangulo *retangulo) {
     int i;
     for (i = 0; i < retangulos->quantidade; i++) {
+        /* testa todos os retângulos, mas evita ele mesmo */
         if (retangulo != &retangulos->lista[i] && existeIntersecao(*retangulo, retangulos->lista[i]))
             return true;
     }
     return false;
+}
+
+int estaDentroDoMundo(const Retangulos *retangulos, const Retangulo retangulo) {
+    return retangulo.x >= 1 && retangulo.x + retangulo.l - 1 <= retangulos->xMaximo &&
+           retangulo.y >= 1 && retangulo.y + retangulo.h - 1 <= retangulos->yMaximo;
 }
 
 void acionaGravidadeNoRetangulo(const Retangulos *retangulos, Retangulo *retangulo) {
@@ -40,7 +40,7 @@ int comparaPorY(const void *a, const void *b) {
 }
 
 /* Aplicar a gravidade a todos os retângulos, um por um */
-void acionaGravidade(Retangulos *retangulos) {
+void acionaGravidade(const Retangulos *retangulos) {
     int i;
     /* temos de ordenar do mais acima para o mais abaixo para garantir que os de baixo caem primeiro que os de cima
      * senão para a gravidade ser aplicada por ordem, a começar por baixo (a ordem é irrelevante na lista) */
@@ -92,7 +92,7 @@ bool contemPonto(const Retangulo retangulo, const int x, const int y) {
            && y >= retangulo.y && y <= retangulo.y + retangulo.h - 1;
 }
 
-Retangulo *procuraRetangulo(Retangulos *retangulos, const int x, const int y) {
+Retangulo *procuraRetangulo(const Retangulos *retangulos, const int x, const int y) {
     int r;
     for (r = 0; r < retangulos->quantidade; r++) {
         Retangulo *retangulo = &retangulos->lista[r];
@@ -102,7 +102,7 @@ Retangulo *procuraRetangulo(Retangulos *retangulos, const int x, const int y) {
     return NULL;
 }
 
-int move(Retangulos *retangulos, Retangulo *retangulo, const int p, const int salto) {
+int move(const Retangulos *retangulos, Retangulo *retangulo, const int p, const int salto) {
     int i, xRetanguloInicial;
     xRetanguloInicial = retangulo->x;
 
@@ -124,7 +124,7 @@ int move(Retangulos *retangulos, Retangulo *retangulo, const int p, const int sa
     return 0;
 }
 
-int moveRetangulo(Retangulos *retangulos, const int x, const int y, const int p, const int salto) {
+int moveRetangulo(const Retangulos *retangulos, const int x, const int y, const int p, const int salto) {
     Retangulo *retangulo = procuraRetangulo(retangulos, x, y);
     if (!retangulo)
         return ERRO_MOVER_RETANGULO_INEXISTENTE;
@@ -140,16 +140,18 @@ int apagaRetangulo(Retangulos *retangulos, const int x, const int y) {
     if (!retangulo)
         return ERRO_APAGAR_RETANGULO_INEXISTENTE;
 
+    /* coloca o último no ligar do apagado e reduz quantidade total */
     ultimoRetangulo = &retangulos->lista[retangulos->quantidade - 1];
     *retangulo = *ultimoRetangulo;
     retangulos->quantidade--;
 
+    /* se for zero, realloc pode dar problemas, sendo melhor libertar e sair */
     if (retangulos->quantidade == 0) {
-        /* se for zero, realloc pode dar problemas por isso é melhor libertar e sair */
         free(retangulos->lista);
         retangulos->lista = NULL;
         return 0;
     }
+    /* realoca memória da lista */
     retangulos->lista = realloc(retangulos->lista, retangulos->quantidade * sizeof(Retangulo));
     if (retangulos->lista == NULL) {
         printf("Erro ao realocar memoria\n");

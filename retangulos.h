@@ -32,7 +32,7 @@ int criaRetangulo(Retangulos *retangulos, int x, int y, int l, int h);
 
 bool estaNoContorno(Retangulo retangulo, int x, int y);
 
-int moveRetangulo(Retangulos *retangulos, int x, int y, int p, int salto);
+int moveRetangulo(const Retangulos *retangulos, int x, int y, int p, int salto);
 
 int apagaRetangulo(Retangulos *retangulos, int x, int y);
 
