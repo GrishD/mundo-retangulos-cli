@@ -81,7 +81,7 @@ void trataApagar(Retangulos *retangulos) {
     }
 }
 
-void main() {
+int main() {
     char comando[100];
     Retangulos retangulos;
 
@@ -103,7 +103,9 @@ void main() {
             trataMoverEsquerda(&retangulos);
         else if (strcmp(comando, "delete") == 0)
             trataApagar(&retangulos);
-        else
+        else {
+            printf("Erro: comando invalido.\n");
             imprimeMenu();
+        }
     }
 }
